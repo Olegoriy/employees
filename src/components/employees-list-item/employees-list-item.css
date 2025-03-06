@@ -1,6 +1,7 @@
 .list-group-item {
     padding: 15px 20px;
     border-bottom: 1px solid #3d5a80;
+    width: 100%;
 }
 
 .list-group-item:last-child {
@@ -12,6 +13,7 @@
     font-size: 20px;
     cursor: pointer;
     min-width: 550px;
+    text-align: start;
 }
 
 .list-group-item input {

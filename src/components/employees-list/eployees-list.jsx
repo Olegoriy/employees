@@ -7,7 +7,7 @@ const EmployeesList = ({data}) => {
     const elements = data.map(item => {
         const {id, ...itemProps} = item;
         return (
-            <EmployeesListItem key={id} {...itemProps}/>
+            <li key={id}><EmployeesListItem  {...itemProps}/></li>
         )
     })
 
