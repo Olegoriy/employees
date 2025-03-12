@@ -31,19 +31,21 @@ class App extends Component {
     }
 
     addItem = (name, salary) => {
-        const newItem = {
-            name,
-            salary,
-            increase: false,
-            rise: false,
-            id: this.maxId++
-        }
-        this.setState(({data}) => {
-            const newArr = [...data, newItem];
-            return {
-                data: newArr
+        if (name.length >= 2 && salary) {
+            const newItem = {
+                name,
+                salary,
+                increase: false,
+                rise: false,
+                id: this.maxId++
             }
-        })
+            this.setState(({data}) => {
+                const newArr = [...data, newItem];
+                return {
+                    data: newArr
+                }
+            })
+        }
     }
 
     onToggleProp = (id, prop) => {
@@ -58,9 +60,11 @@ class App extends Component {
     }
 
     render () {
+        const employees = this.state.data.length;
+        const increased = this.state.data.filter(item => item.increase).length;
         return (
             <div className="app">
-                <AppInfo/>
+                <AppInfo employees={employees} increased={increased}/>
     
                 <div className="search-panel">
                     <SearchPanel/>
