@@ -25,11 +25,9 @@ class App extends Component {
     }
 
     deleteItem = (id) => {
-        this.setState(({data}) => {
-            return {
-                data: data.filter(item => item.id !== id)
-            }
-        })
+        this.setState(({data}) => ({
+            data: data.filter(item => item.id !== id)
+        }));
     }
 
     addItem = (name, salary) => {
@@ -41,12 +39,9 @@ class App extends Component {
                 rise: false,
                 id: this.maxId++
             }
-            this.setState(({data}) => {
-                const newArr = [...data, newItem];
-                return {
-                    data: newArr
-                }
-            })
+            this.setState(({data}) => ({
+                data: [...data, newItem]
+            }));
         }
     }
 
@@ -58,17 +53,14 @@ class App extends Component {
                 }
                 return item;
             })
-        }))
+        }));
     }
 
     searchEmp = (items, term) => {
         if (term.length === 0) {
             return items;
         }
-
-        return items.filter(item => {
-            return item.name.indexOf(term) > -1
-        })
+        return items.filter(item => item.name.indexOf(term) > -1);
     }
 
     onUpdateSearch = (term) => {
@@ -82,7 +74,7 @@ class App extends Component {
             case 'moreThan1000':
                 return items.filter(item => item.salary > 1000);
             default:
-                return items
+                return items;
         }
     }
 
@@ -90,11 +82,27 @@ class App extends Component {
         this.setState({filter});
     }
 
+    onChangeSalary = (id, newSalary) => {
+        if (newSalary.trim() === '' || isNaN(newSalary)) {
+            return; 
+        }
+    
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, salary: Number(newSalary)}; 
+                }
+                return item;
+            })
+        }));
+    }
+
     render () {
         const {data, term, filter} = this.state;
-        const employees = this.state.data.length;
-        const increased = this.state.data.filter(item => item.increase).length;
+        const employees = data.length;
+        const increased = data.filter(item => item.increase).length;
         const visibleData = this.filterPost(this.searchEmp(data, term), filter);
+
         return (
             <div className="app">
                 <AppInfo employees={employees} increased={increased}/>
@@ -106,8 +114,10 @@ class App extends Component {
     
                 <EmployeesList 
                     data={visibleData} 
-                    onDelete={id => this.deleteItem(id)}
-                    onToggleProp={this.onToggleProp}/>
+                    onDelete={this.deleteItem}
+                    onToggleProp={this.onToggleProp}
+                    onChangeSalary={this.onChangeSalary}
+                />
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
         );
